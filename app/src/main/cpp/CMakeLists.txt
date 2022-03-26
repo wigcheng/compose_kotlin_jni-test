@@ -16,13 +16,12 @@ project("compose_test")
 # Gradle automatically packages shared libraries with your APK.
 
 add_library( # Sets the name of the library.
-             compose_test
+        compose_test
 
              # Sets the library as a shared library.
              SHARED
-
              # Provides a relative path to your source file(s).
-             compose_test.cpp )
+        compose_test.cpp)
 
 # Searches for a specified prebuilt library and stores the path as a
 # variable. Because CMake includes system libraries in the search path by
@@ -32,6 +31,7 @@ add_library( # Sets the name of the library.
 
 find_library( # Sets the name of the path variable.
               log-lib
+
               # Specifies the name of the NDK library that
               # you want CMake to locate.
               log )
@@ -40,9 +40,13 @@ find_library( # Sets the name of the path variable.
 # can link multiple libraries, such as libraries you define in this
 # build script, prebuilt third-party libraries, or system libraries.
 
+include_directories(arm64-v8a/)
+add_library(gpiod STATIC IMPORTED)
+set_target_properties(gpiod PROPERTIES IMPORTED_LOCATION ${CMAKE_CURRENT_SOURCE_DIR}/arm64-v8a/libgpiod.a)
+
 target_link_libraries( # Specifies the target library.
                        compose_test
-
+                       gpiod
                        # Links the target library to the log library
                        # included in the NDK.
                        ${log-lib} )

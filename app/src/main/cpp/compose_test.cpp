@@ -7,6 +7,26 @@
 #include <jni.h>
 #include <cinttypes>
 #include <string>
+#include <gpiod.h>
+
+extern "C" JNIEXPORT jstring JNICALL
+Java_com_example_compose_1test_MainActivity_getGpioTotalBank(JNIEnv *env, jobject thiz) {
+
+    std::ignore = thiz;
+    struct gpiod_chip_iter *iter;
+    struct gpiod_chip *chip;
+    int total_bank = 0;
+    char ret_str[4] = {0};
+
+    iter = gpiod_chip_iter_new();
+    gpiod_foreach_chip(iter, chip) {
+        total_bank += 1;
+    }
+    gpiod_chip_iter_free(iter);
+    sprintf(ret_str, "%d", total_bank);
+
+    return env->NewStringUTF(ret_str);
+}
 
 extern "C" JNIEXPORT jstring JNICALL
 Java_com_example_compose_1test_MainActivity_getGpioInfo(JNIEnv *env, jobject thiz, jint gpiobank, jint gpioline) {
@@ -15,10 +35,8 @@ Java_com_example_compose_1test_MainActivity_getGpioInfo(JNIEnv *env, jobject thi
 
     char bank[32] = {0}, ret[4] = {0};
     sprintf(bank, "gpiochip%d", gpiobank);
-    //ALOGI("GPIO gpiobank is %d", gpiobank);
-    //ALOGI("GPIO gpioline is %d", gpioline);
 
-    //jint value = gpiod_ctxless_get_value((char *)bank, gpioline, 0, "gpioget");
+    jint value = gpiod_ctxless_get_value((char *)bank, gpioline, 0, "gpioget");
 
     //ALOGI("Value = %d", value);
 

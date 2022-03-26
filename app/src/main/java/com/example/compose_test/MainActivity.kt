@@ -47,8 +47,8 @@ class MainActivity : ComponentActivity() {
                     var DropdownGpioDirection = createDropDownList()
                     Column {
                         CardDemo()
-                        //Greeting(stringFromJNI())
-                        Greeting("Select GPIO BANK")
+                        Greeting(getGpioTotalBank())
+                        //Greeting("Select GPIO BANK")
                         DropdownGpioBank.DropdownCreate(5, createDropDownList.listType.GPIO_BANK)
                         Greeting("Select GPIO LINE")
                         DropdownGpioLine.DropdownCreate(5, createDropDownList.listType.GPIO_LINE)
@@ -58,16 +58,14 @@ class MainActivity : ComponentActivity() {
                             ButtonWithColor()
                             ButtonWithColor()
                         }
-
                     }
-
                 }
             }
         }
     }
 
     external fun stringFromJNI(): String
-
+    external fun getGpioTotalBank(): String
     companion object {
         // Used to load the 'myapplication' library on application startup.
         init {
